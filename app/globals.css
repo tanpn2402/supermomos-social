@@ -2,5 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 3re parties */
+@import url(../styles/react-date-picker.css);
+
 @import url(../styles/header.css);
 @import url(../styles/page-event.css);
+
+
+
+input[type="checkbox"]:checked + div,
+input[type="radio"]:checked + div {
+  border-color: #942F70;
+}
+
+input[type="checkbox"]:checked + div svg,
+input[type="radio"]:checked + div svg {
+  @apply block;
+}
