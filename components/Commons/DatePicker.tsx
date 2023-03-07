@@ -1,28 +1,52 @@
 "use client";
 
 import useOnClickOutside from "@/utils/hooks/useOnClickOutside";
-import { format, } from 'date-fns';
-import React from "react";
+import FormDataAttrs from "@/utils/interfaces/FormDataAttrs";
+import FormDataProps from "@/utils/interfaces/FormDataProps";
+import { cls } from "@/utils/utl";
+import { format, parse, isValid as isDateValid } from 'date-fns';
+import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
 import { DayPicker } from 'react-day-picker';
 
-const DatePicker = () => {
-  const ref = React.useRef(null);
-  const [isOpenPicker, togglePicker] = React.useState<boolean>(false);
-  const [selected, setSelected] = React.useState<Date>(new Date());
-  useOnClickOutside(ref, () => togglePicker(false));
+interface Props extends FormDataProps {
+  className?: string
+}
 
-  return <div className="relative" ref={ref}>
-    <input className="rounded h-[40px] px-3 w-full placeholder-current" placeholder="Date"
-      onFocus={ev => togglePicker(true)}
-      defaultValue={format(selected, "yyyy-MM-dd")}
+const DATE_FORMAT = "yyyy-MM-dd";
+
+const DatePicker = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
+  const anchorRef = React.useRef(null);
+  const [isValid, toggleIsValid] = React.useState<boolean>(true);
+  const [isOpenPicker, togglePicker] = React.useState<boolean>(false);
+  const [date, setDate] = React.useState<string>(format(new Date(), DATE_FORMAT));
+  useOnClickOutside(anchorRef, () => togglePicker(false));
+
+  useImperativeHandle(ref, () => ({
+    validate() {
+      return isValid;
+    },
+    getData() {
+      return date;
+    },
+  }));
+
+  useEffect(() => {
+    toggleIsValid(isDateValid(parse(date, DATE_FORMAT, new Date())))
+  }, [date]);
+
+  return <div className={cls("relative", props.className || "")} ref={anchorRef}>
+    <input className={cls("rounded h-[40px] px-3 w-full placeholder-current", !isValid ? "data-invalid" : "")} placeholder="Date"
+      onFocus={() => togglePicker(true)}
+      onChange={(ev) => setDate(ev.target.value)}
+      value={date}
     />
     {isOpenPicker && <div className="absolute rounded bg-white left-0 top-100 mt-1">
       <DayPicker
         mode="single"
         showOutsideDays
-        selected={selected}
+        selected={parse(date, DATE_FORMAT, new Date())}
         onSelect={date => {
-          setSelected(date!);
+          setDate(format(date!, DATE_FORMAT));
           togglePicker(false);
         }}
       />
@@ -30,4 +54,4 @@ const DatePicker = () => {
   </div>
 }
 
-export default DatePicker;
+export default forwardRef<FormDataAttrs, Props>(DatePicker);

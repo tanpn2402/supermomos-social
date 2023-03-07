@@ -49,7 +49,7 @@ const IS_STICK_NAV = false;
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  return <header className={cls("flex items-center justify-center mx-auto max-w-screen-xl h-[80px]", IS_STICK_NAV ? "sticky top-0" : "")}>
+  return <header className={cls("flex-center mx-auto max-w-screen-xl h-[80px]", IS_STICK_NAV ? "sticky top-0" : "")}>
     <nav className="container flex items-center justify-between px-[32px] py-0">
       <div className="flex lg:flex-1">
         <a href="#" className="-m-1.5 p-1.5">
@@ -60,7 +60,7 @@ const Header = () => {
       <div className="flex lg:hidden">
         <button
           type="button"
-          className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+          className="-m-2.5 inline-flex-center rounded-md p-2.5 text-gray-700"
           onClick={() => setMobileMenuOpen(true)}
         >
           <span className="sr-only">Open main menu</span>
@@ -69,7 +69,7 @@ const Header = () => {
       </div>
       <div className="hidden lg:flex lg:gap-x-12">
         {NAV_MENU.map(menu => <div key={`nav-menu-${menu.id}`}
-          className="flex items-center justify-center"
+          className="flex-center"
         >
           <a
             href="#"

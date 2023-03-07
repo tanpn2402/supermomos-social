@@ -2,9 +2,10 @@
 
 import useDebounce from "@/utils/hooks/useDebounce";
 import useOnClickOutside from "@/utils/hooks/useOnClickOutside";
-import { format, } from 'date-fns';
-import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { DayPicker } from 'react-day-picker';
+import FormDataAttrs from "@/utils/interfaces/FormDataAttrs";
+import FormDataProps from "@/utils/interfaces/FormDataProps";
+import { cls } from "@/utils/utl";
+import React, { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 type Location = {
   id: string
@@ -14,20 +15,39 @@ type Location = {
   address: string
 }
 
-const LocationSuggestion = () => {
-  const ref = useRef(null);
+interface Props extends FormDataProps {
+  className?: string
+}
+
+const LocationSuggestion = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
+  const anchorRef = useRef(null);
   const [isLoading, toggleLoading] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<Location[]>([]);
   const [isOpenPicker, togglePicker] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
   const debouncedValue = useDebounce<string>(value, 500);
-  const [selected, setSelected] = useState<Location | null>(null);
+  const [isValid, toggleIsValid] = React.useState<boolean>(true);
 
-  useOnClickOutside(ref, () => togglePicker(false));
+  useOnClickOutside(anchorRef, () => togglePicker(false));
+
+  useImperativeHandle(ref, () => ({
+    validate() {
+      const isValid = validate(value);
+      toggleIsValid(isValid);
+      return isValid;
+    },
+    getData() {
+      return value;
+    },
+  }));
 
   useEffect(() => {
     fetchData();
   }, [debouncedValue]);
+
+  const validate = useCallback((value: string) => {
+    return value.trim().length > 0;
+  }, [value]);
 
   const fetchData = useCallback(() => {
     if (value.trim().length > 0 && isOpenPicker) {
@@ -55,20 +75,19 @@ const LocationSuggestion = () => {
     }
   }, [value, isOpenPicker]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    setSelected(null);
-  }
+  const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
+    setValue(ev.target.value);
+    toggleIsValid(validate(ev.target.value));
+  }, []);
 
   const handleChangeSelection = (p: Location) => {
-    setSelected(p);
+    setValue(p.name + " " + p.address);
     togglePicker(false);
-    setValue(p.name);
   }
 
-  return <div className="relative w-full" ref={ref}>
-    <input className="rounded h-[40px] px-3 w-full placeholder-current" placeholder="Location"
-      onFocus={ev => togglePicker(true)}
+  return <div className={cls("relative w-full", props.className || "")} ref={anchorRef}>
+    <input className={cls("rounded h-[40px] px-3 w-full placeholder-current", isValid ? "" : "data-invalid")} placeholder="Location"
+      onFocus={() => togglePicker(true)}
       value={value}
       onChange={handleChange}
     />
@@ -87,4 +106,4 @@ const LocationSuggestion = () => {
   </div>
 }
 
-export default LocationSuggestion;
+export default forwardRef<FormDataAttrs, Props>(LocationSuggestion);

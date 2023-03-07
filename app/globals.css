@@ -8,14 +8,47 @@
 @import url(../styles/header.css);
 @import url(../styles/page-event.css);
 
-
-
-input[type="checkbox"]:checked + div,
-input[type="radio"]:checked + div {
-  border-color: #942F70;
+.flex-center {
+  @apply flex items-center justify-center;
 }
 
-input[type="checkbox"]:checked + div svg,
-input[type="radio"]:checked + div svg {
+.badge {
+  @apply flex items-center justify-center font-medium text-gray-700 bg-gray-100 rounded-2xl cursor-pointer bg-gray-200 transition ease-in-out;
+  padding: 2px 10px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.badge.active {
+  @apply bg-purple-50;
+}
+
+.data-invalid {
+  outline-color: theme("colors.red.600");
+  outline-width: 2px;
+  outline-style: solid;
+  background-color: theme("colors.red.200");
+}
+
+input, textarea, select {
+  outline-width: 2px;
+  outline-style: solid;
+  outline-color: transparent;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-color: theme("colors.purple.DEFAULT");
+}
+
+input[type="checkbox"]:checked+div,
+input[type="radio"]:checked+div {
+  border-color: theme("colors.purple.DEFAULT");
+}
+
+input[type="checkbox"]:checked+div svg,
+input[type="radio"]:checked+div svg {
   @apply block;
 }
