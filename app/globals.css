@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(../styles/header.css);
+@import url(../styles/page-event.css);
