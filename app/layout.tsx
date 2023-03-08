@@ -13,6 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Suppermomos: Create event</title>
+      </head>
       <body className="bg-gradient-main">
         <Header />
         {children}
