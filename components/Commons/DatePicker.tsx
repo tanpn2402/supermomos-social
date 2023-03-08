@@ -35,7 +35,7 @@ const DatePicker = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
   }, [date]);
 
   return <div className={cls("relative", props.className || "")} ref={anchorRef}>
-    <input className={cls("rounded h-[40px] px-3 w-full placeholder-current text-2xl", !isValid ? "data-invalid" : "")} placeholder="Date"
+    <input className={cls("rounded h-[40px] px-3 w-full text-gray placeholder-current text-2xl", !isValid ? "data-invalid" : "")} placeholder="Date"
       onFocus={() => togglePicker(true)}
       onChange={(ev) => setDate(ev.target.value)}
       value={date}

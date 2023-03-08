@@ -13,10 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{
-        background: "linear-gradient(138.11deg, #FEF452 0%, #942F70 121.92%)",
-        minHeight: "100vh"
-      }}>
+      <body className="bg-gradient-main">
         <Header />
         {children}
       </body>

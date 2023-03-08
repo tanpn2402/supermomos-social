@@ -21,8 +21,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="container mx-auto max-w-screen-xl">
-      <form className="p-8" onSubmit={ev => {
+    <main className="flex-center mx-auto max-w-screen-xl">
+      <form className="container py-8 px-4 lg:px-8" onSubmit={ev => {
         ev.preventDefault();
         refs.current.forEach((handler, name) => {
           console.log(name, handler.validate());;

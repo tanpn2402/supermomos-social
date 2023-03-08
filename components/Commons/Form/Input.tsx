@@ -41,7 +41,7 @@ const Input = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
     }
   }, [props]);
 
-  return <input ref={inputRef} className={cls("rounded h-[40px] placeholder-current", props.className || "", !isValid ? "data-invalid" : "")}
+  return <input ref={inputRef} className={cls("rounded h-[40px] text-gray placeholder-current", props.className || "", !isValid ? "data-invalid" : "")}
     placeholder={props.placeHolder}
     onChange={handleChange}
     type={props.type}

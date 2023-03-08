@@ -9,6 +9,14 @@
 @import url(../styles/page-event.css);
 @import url(../styles/modal.css);
 
+body {
+  min-height: 100vh;
+}
+
+.bg-gradient-main {
+  background: linear-gradient(138.11deg, theme("colors.yellow") 0%, theme("colors.purple.DEFAULT") 121.92%);
+}
+
 .flex-center {
   @apply flex items-center justify-center;
 }

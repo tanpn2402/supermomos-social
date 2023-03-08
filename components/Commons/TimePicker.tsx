@@ -32,7 +32,7 @@ const TimePicker = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
   }));
 
   return <div className={cls("relative w-full", props.className || "")}>
-    <select className="rounded h-[40px] px-3 w-full placeholder-current text-2xl" value={selected.id}
+    <select className="rounded h-[40px] px-3 w-full text-gray placeholder-current text-2xl" value={selected.id}
       onChange={ev => setSelected(TIME_OPTIONS.filter(e => e.id === ev.target.value)[0])}>
       {TIME_OPTIONS.map(e => <option key={e.id} className="p-2 hover:bg-gray-200 cursor-pointer text-base" value={e.id}>
         {e.title}

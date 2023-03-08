@@ -123,7 +123,7 @@ const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => 
             </defs>
           </svg>
         </div>
-        <div className={cls("font-semibold text-base text-[#14597A]")}>
+        <div className={cls("font-semibold text-base text-[#14597A] z-[9]")}>
           {selected === undefined ? "Add a banner" : "Change a banner"}
         </div>
       </div>

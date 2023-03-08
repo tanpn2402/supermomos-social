@@ -14,9 +14,13 @@ module.exports = {
       transparent: "transparent",
       current: "currentColor",
       white: colors.white,
-      gray: colors.gray,
+      gray: {
+        ...colors.gray,
+        DEFAULT: "#333333"
+      },
       red: colors.red,
       purple: {
+        ...colors.purple,
         DEFAULT: "#942F70",
         50: "#F9F5FF"
       },

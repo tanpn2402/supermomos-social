@@ -35,7 +35,7 @@ const EventDescription = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>
         ref={textRef}
         rows={6}
         onChange={handleChange}
-        className={cls("p-3 w-full rounded-lg border border-[#D0D5DD] text-gray-900 placeholder:text-gray-400", isValid ? "" : "data-invalid")}
+        className={cls("p-3 w-full rounded-lg border border-[#D0D5DD] text-gray-900 text-gray placeholder:text-gray-400", isValid ? "" : "data-invalid")}
         placeholder="Description of your event..."
         defaultValue=""
       />

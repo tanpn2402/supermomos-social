@@ -11,9 +11,7 @@
 
 .event__attr-detail {
   padding-right: calc(var(--event-banner-width-lg) + 18px);
-  min-width: 576px;
-
-  
+  padding-right: 0;
 }
 
 .event__banner {
@@ -22,24 +20,14 @@
 
 .event__banner-holder {
   @apply rounded-tr-[64px] rounded-bl-[64px] bg-[#f2f2f21a] border border-[#F2F2F2] border-dashed h-[445px] flex items-center justify-center object-cover bg-center top-0 right-0;
-  float: right;
-}
-
-
-@media screen(sm) {
-  .event__attr-detail {
-    padding-right: 0;
-  }
-
-  .event__banner-holder {
-    float: unset;
-    width: calc(100%);
-  }
+  float: unset;
+  width: calc(100%);
 }
 
 @media screen(md) {
   .event__attr-detail {
     padding-right: calc(var(--event-banner-width-md) + 18px);
+    min-width: 576px;
   }
 
   .event__banner-holder {
@@ -51,10 +39,12 @@
 @media screen(lg) {
   .event__attr-detail {
     padding-right: calc(var(--event-banner-width-lg) + 18px);
+    min-width: 576px;
   }
 
   .event__banner-holder {
     float: right;
     width: calc(100% + var(--event-banner-width-lg));
+    min-width: 576px;
   }
 }

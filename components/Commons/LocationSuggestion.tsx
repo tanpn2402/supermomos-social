@@ -86,7 +86,7 @@ const LocationSuggestion = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
   }
 
   return <div className={cls("relative w-full", props.className || "")} ref={anchorRef}>
-    <input className={cls("rounded h-[40px] px-3 w-full placeholder-current", isValid ? "" : "data-invalid")} placeholder="Location"
+    <input className={cls("rounded h-[40px] px-3 w-full text-gray placeholder-current", isValid ? "" : "data-invalid")} placeholder="Location"
       onFocus={() => togglePicker(true)}
       value={value}
       onChange={handleChange}
