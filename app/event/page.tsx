@@ -47,26 +47,17 @@ export default function Home() {
 
         console.log(data);
       }}>
-        <div className="flex">
-          <div style={{
-            width: "calc(50% - 150px)"
-          }}
-            className="mr-5">
-            <EventAttribute ref={setRef("attr")} />
-          </div>
-          <div style={{
-            width: "calc(50% + 150px - 20px)"
-          }}>
-            <EventBanner ref={setRef("banner")} />
-          </div>
+        <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
+          <EventAttribute ref={setRef("attr")} className="order-2 md:order-1" />
+          <EventBanner ref={setRef("banner")} className="order-1 md:order-2" />
         </div>
-        <div className="w-3/6 mt-8">
+        <div className="w-full md:w-4/5 lg:w-3/6 mt-8">
           <EventDescription ref={setRef("description")} />
         </div>
-        <div className="w-3/6 mt-8 p-8 rounded-[20px] bg-white">
+        <div className="w-full md:w-4/5 lg:w-3/6 mt-8 p-8 rounded-[20px] bg-white">
           <EventSettings ref={setRef("settings")} />
         </div>
-        <div className="w-3/6 mt-8">
+        <div className="w-full md:w-4/5 lg:w-3/6 mt-8">
           <button
             type="submit"
             className="w-full flex justify-center items-center rounded-md bg-yellow h-12 rounded-lg text-purple text-base font-medium"

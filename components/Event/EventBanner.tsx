@@ -5,7 +5,7 @@ import FormDataProps from "@/utils/interfaces/FormDataProps";
 import ModalHandlers from "@/utils/interfaces/ModalHandlers";
 import { cls } from "@/utils/utl";
 import Image from "next/image";
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import Modal from "../Commons/Modal";
 
 const BANNER_RESOURCES = [
@@ -85,11 +85,14 @@ const BannerModal = forwardRef<BannerModalHandlers, BannerModalProps>((props, re
 
 const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => {
   const bannerModalRef = useRef<BannerModalHandlers>(null);
+  const [isValid, toggleIsValid] = useState<boolean>(true);
   const [selected, setSelected] = useState<string>();
 
   useImperativeHandle(ref, () => ({
     validate() {
-      return selected !== undefined;
+      const isValid = selected !== undefined;
+      toggleIsValid(isValid);
+      return isValid;
     },
     getData() {
       return {
@@ -98,13 +101,14 @@ const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => 
     }
   }));
 
-  return <>
-    <div className="rounded-tr-[64px] rounded-bl-[64px] bg-[#f2f2f21a] border border-[#F2F2F2] border-dashed h-[445px] flex-center object-cover bg-center"
+  return <div className={cls("event__banner", props.className || "")}>
+    <div className="event__banner-holder"
       style={!selected ? {} : {
         backgroundImage: `url(${selected})`,
         borderColor: "transparent"
       }}>
-      <div className="flex cursor-pointer" onClick={() => bannerModalRef.current?.toggle?.(true)}>
+      <div className={cls("flex cursor-pointer rounded p-2", isValid ? "" : "data-invalid", selected === undefined ? "" : "bg-yellow")}
+        onClick={() => bannerModalRef.current?.toggle?.(true)}>
         <div className="flex-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <g clipPath="url(#clip0_8826_82568)">
@@ -119,8 +123,8 @@ const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => 
             </defs>
           </svg>
         </div>
-        <div className="font-semibold text-base text-[#14597A]">
-          Add a banner
+        <div className={cls("font-semibold text-base text-[#14597A]")}>
+          {selected === undefined ? "Add a banner" : "Change a banner"}
         </div>
       </div>
     </div>
@@ -128,10 +132,11 @@ const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => 
     <BannerModal ref={bannerModalRef}
       onSuccess={banner => {
         setSelected(banner);
+        toggleIsValid(true);
         bannerModalRef.current?.toggle?.(false);
       }} />
 
-  </>
+  </div>
 }
 
 export default forwardRef<FormDataAttrs, FormDataProps>(EventBanner);
