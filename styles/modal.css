@@ -1,0 +1,33 @@
+.modal {
+  @apply fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto;
+  z-index: 1001;
+}
+
+.modal-dialog {
+  @apply relative w-auto pointer-events-none;
+  @apply max-w-screen-sm m-auto;
+}
+
+.modal-content {
+  @apply border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current;
+  @apply mt-8;
+  z-index: 1;
+}
+
+.modal-header {
+  @apply flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md text-lg text-gray-500 font-medium;
+}
+
+.modal-body {
+  @apply relative p-4;
+}
+
+.modal-footer {
+  @apply flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md;
+}
+
+.modal-backdrop {
+  @apply absolute top-0 left-0 w-screen h-screen;
+  background-color: black;
+  opacity: 0.2;
+}
