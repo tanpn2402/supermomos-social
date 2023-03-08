@@ -2,25 +2,109 @@
 
 import FormDataAttrs from "@/utils/interfaces/FormDataAttrs";
 import FormDataProps from "@/utils/interfaces/FormDataProps";
+import ModalHandlers from "@/utils/interfaces/ModalHandlers";
+import { cls } from "@/utils/utl";
+import Image from "next/image";
 import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import Modal from "../Commons/Modal";
+
+const BANNER_RESOURCES = [
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_1.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_2.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_3.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_4.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_5.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_6.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_7.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_8.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_9.jpg",
+  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_10.jpg"
+]
+
+interface BannerModalHandlers extends ModalHandlers {
+  getData: () => string
+}
+
+interface BannerModalProps {
+  onSuccess: (value: string) => void
+}
+
+const BannerModal = forwardRef<BannerModalHandlers, BannerModalProps>((props, ref) => {
+  const modalRef = useRef<ModalHandlers>(null);
+  const [selected, setSelected] = useState<string>();
+
+  useImperativeHandle(ref, () => ({
+    toggle(p) {
+      modalRef.current?.toggle?.(p);
+    },
+    getData() {
+      return selected!;
+    },
+  }));
+
+  return <Modal.Main ref={modalRef} defaultOpen={false} ignoreBodyScrolling>
+    <Modal.Header>
+      Choose a banner
+    </Modal.Header>
+    <Modal.Body>
+      <div className="grid grid-cols-6 gap-2">
+        {BANNER_RESOURCES.map(banner => <div key={`banner-${banner}`}
+          className={cls("h-[80px] p-1 border-2", selected === banner ? "border-purple" : "border-transparent", "hover:border-purple transition delay-50")}
+          onClick={() => setSelected(banner)}>
+          <div className="relative w-full h-full">
+            <Image
+              className="object-cover"
+              loader={() => banner}
+              src={banner}
+              alt="Event banner"
+              fill
+            />
+          </div>
+        </div>)}
+      </div>
+    </Modal.Body>
+    <Modal.Footer>
+      <button
+        type="button"
+        onClick={() => modalRef.current?.toggle?.(false)}
+        className="mr-2 flex-center rounded-md rounded-lg text-base text-gray-500 font-medium px-4 py-2 hover:bg-gray-100 transition delay-50"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        disabled={selected === undefined}
+        onClick={() => props.onSuccess(selected!)}
+        className="flex-center rounded-md bg-yellow rounded-lg text-purple text-base font-medium px-4 py-2 hover:bg-yellow-800 transition delay-50 disabled:opacity-75 disabled:cursor-not-allowed"
+      >
+        Save
+      </button>
+    </Modal.Footer>
+  </Modal.Main >
+});
 
 const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => {
-  const textRef = useRef<HTMLInputElement>(null);
+  const bannerModalRef = useRef<BannerModalHandlers>(null);
+  const [selected, setSelected] = useState<string>();
 
   useImperativeHandle(ref, () => ({
     validate() {
-      // return textRef.current?.value.trim().length! > 0;
-      return true;
+      return selected !== undefined;
     },
     getData() {
-      // return textRef.current?.value;
-      return 0;
+      return {
+        "banner": selected
+      };
     }
   }));
 
   return <>
-    <div className="rounded-tr-[64px] rounded-bl-[64px] bg-[#f2f2f21a] border border-[#F2F2F2] border-dashed h-[445px] flex-center">
-      <div className="flex cursor-pointer">
+    <div className="rounded-tr-[64px] rounded-bl-[64px] bg-[#f2f2f21a] border border-[#F2F2F2] border-dashed h-[445px] flex-center object-cover bg-center"
+      style={!selected ? {} : {
+        backgroundImage: `url(${selected})`,
+        borderColor: "transparent"
+      }}>
+      <div className="flex cursor-pointer" onClick={() => bannerModalRef.current?.toggle?.(true)}>
         <div className="flex-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <g clipPath="url(#clip0_8826_82568)">
@@ -40,6 +124,13 @@ const EventBanner = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) => 
         </div>
       </div>
     </div>
+
+    <BannerModal ref={bannerModalRef}
+      onSuccess={banner => {
+        setSelected(banner);
+        bannerModalRef.current?.toggle?.(false);
+      }} />
+
   </>
 }
 
