@@ -13,8 +13,30 @@ body {
   min-height: 100vh;
 }
 
+input, textarea, select {
+  outline-width: 2px;
+  outline-style: solid;
+  outline-color: transparent;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-color: theme("colors.purple.DEFAULT");
+}
+
+input[type="checkbox"]:checked+div,
+input[type="radio"]:checked+div {
+  border-color: theme("colors.purple.DEFAULT");
+}
+
+input[type="checkbox"]:checked+div svg,
+input[type="radio"]:checked+div svg {
+  @apply block;
+}
+
 .bg-gradient-main {
-  background: linear-gradient(138.11deg, theme("colors.yellow") 0%, theme("colors.purple.DEFAULT") 121.92%);
+  background: linear-gradient(138.11deg, theme("colors.yellow.DEFAULT") 0%, theme("colors.purple.DEFAULT") 121.92%);
 }
 
 .flex-center {
@@ -40,24 +62,10 @@ body {
   background-color: theme("colors.red.200");
 }
 
-input, textarea, select {
+.data-valid {
+  outline-color: theme("colors.purple.DEFAULT");
   outline-width: 2px;
   outline-style: solid;
-  outline-color: transparent;
-}
-
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline-color: theme("colors.purple.DEFAULT");
-}
-
-input[type="checkbox"]:checked+div,
-input[type="radio"]:checked+div {
-  border-color: theme("colors.purple.DEFAULT");
-}
-
-input[type="checkbox"]:checked+div svg,
-input[type="radio"]:checked+div svg {
-  @apply block;
+  color: theme("colors.purple.DEFAULT");
+  background-color: theme("colors.white");
 }

@@ -14,6 +14,7 @@ module.exports = {
       transparent: "transparent",
       current: "currentColor",
       white: colors.white,
+      green: colors.green,
       gray: {
         ...colors.gray,
         DEFAULT: "#333333"
@@ -24,7 +25,10 @@ module.exports = {
         DEFAULT: "#942F70",
         50: "#F9F5FF"
       },
-      yellow: "#FEF452"
+      yellow: {
+        ...colors.yellow,
+        DEFAULT: "#FEF452"
+      }
     }
   },
   plugins: [],

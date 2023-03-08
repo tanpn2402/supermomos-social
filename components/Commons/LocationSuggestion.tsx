@@ -41,10 +41,6 @@ const LocationSuggestion = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
     },
   }));
 
-  useEffect(() => {
-    fetchData();
-  }, [debouncedValue]);
-
   const validate = useCallback((value: string) => {
     return value.trim().length > 0;
   }, [value]);
@@ -52,33 +48,28 @@ const LocationSuggestion = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
   const fetchData = useCallback(() => {
     if (value.trim().length > 0 && isOpenPicker) {
       toggleLoading(true);
-      setTimeout(() => {
-        setSuggestions([
-          {
-            id: "1",
-            name: "Chelsea Market",
-            address: "163 W 20nd Street, Manhattan, NYC"
-          },
-          {
-            id: "2",
-            name: "Coffee Project",
-            address: "155 7th Ave, New York, NYC"
-          },
-          {
-            id: "3",
-            name: "Slate NY",
-            address: "54 W 21st St, New York, NYC"
+      fetch("/api/addresses")
+        .then(async res => {
+          if (res.ok && res.status === 200) {
+            setSuggestions((await res.json()).data || []);
+            toggleLoading(false);
           }
-        ]);
-        toggleLoading(false);
-      }, 150)
+        })
+        .catch(error => {
+          setSuggestions([]);
+          toggleLoading(false);
+        });
     }
   }, [value, isOpenPicker]);
+
+  useEffect(() => {
+    fetchData();
+  }, [debouncedValue, fetchData]);
 
   const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     setValue(ev.target.value);
     toggleIsValid(validate(ev.target.value));
-  }, []);
+  }, [validate]);
 
   const handleChangeSelection = (p: Location) => {
     setValue(p.name + " " + p.address);

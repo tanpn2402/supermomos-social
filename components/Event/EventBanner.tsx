@@ -1,25 +1,13 @@
 "use client";
 
+import useFetch from "@/utils/hooks/useFetch";
 import FormDataAttrs from "@/utils/interfaces/FormDataAttrs";
 import FormDataProps from "@/utils/interfaces/FormDataProps";
 import ModalHandlers from "@/utils/interfaces/ModalHandlers";
 import { cls } from "@/utils/utl";
 import Image from "next/image";
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from "react";
 import Modal from "../Commons/Modal";
-
-const BANNER_RESOURCES = [
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_1.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_2.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_3.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_4.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_5.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_6.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_7.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_8.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_9.jpg",
-  "https://supermomos-app-resources-us.s3.amazonaws.com/Images/SocialBanner/banner_10.jpg"
-]
 
 interface BannerModalHandlers extends ModalHandlers {
   getData: () => string
@@ -32,6 +20,7 @@ interface BannerModalProps {
 const BannerModal = forwardRef<BannerModalHandlers, BannerModalProps>((props, ref) => {
   const modalRef = useRef<ModalHandlers>(null);
   const [selected, setSelected] = useState<string>();
+  const bannersSWR = useFetch<string[]>("/api/banners", { method: "GET" });
 
   useImperativeHandle(ref, () => ({
     toggle(p) {
@@ -48,19 +37,20 @@ const BannerModal = forwardRef<BannerModalHandlers, BannerModalProps>((props, re
     </Modal.Header>
     <Modal.Body>
       <div className="grid grid-cols-6 gap-2">
-        {BANNER_RESOURCES.map(banner => <div key={`banner-${banner}`}
-          className={cls("h-[80px] p-1 border-2", selected === banner ? "border-purple" : "border-transparent", "hover:border-purple transition delay-50")}
-          onClick={() => setSelected(banner)}>
-          <div className="relative w-full h-full">
-            <Image
-              className="object-cover"
-              loader={() => banner}
-              src={banner}
-              alt="Event banner"
-              fill
-            />
-          </div>
-        </div>)}
+        {bannersSWR.isLoading ? <div className="text-gray-500">Loading...</div> :
+          (bannersSWR.data || []).map(banner => <div key={`banner-${banner}`}
+            className={cls("h-[80px] p-1 border-2", selected === banner ? "border-purple" : "border-transparent", "hover:border-purple transition delay-50")}
+            onClick={() => setSelected(banner)}>
+            <div className="relative w-full h-full">
+              <Image
+                className="object-cover"
+                loader={() => banner}
+                src={banner}
+                alt="Event banner"
+                fill
+              />
+            </div>
+          </div>)}
       </div>
     </Modal.Body>
     <Modal.Footer>

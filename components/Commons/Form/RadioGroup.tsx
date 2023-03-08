@@ -35,7 +35,7 @@ const RadioGroup = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
 
   useEffect(() => {
     setSelected(getSelected());
-  }, [groupRef])
+  }, [groupRef, getSelected])
 
   return <div ref={groupRef} className={props.className || ""} onChange={ev => {
     setSelected((ev.target as HTMLElement).getAttribute("id"));
