@@ -59,7 +59,7 @@ const EventSettings = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) =
   }));
 
   return <>
-    <h2 className="inline-flex h-[60px] px-3 text-[32px] font-bold text-purple bg-yellow">Settings</h2>
+    <h2 className="inline-flex h-[60px] leading-[60px] px-3 text-[32px] font-bold text-purple bg-yellow">Settings</h2>
     <div className="mt-6">
       <Checkbox ref={setRef("isManualApprove")} id="aprrove_attendees" label="I want to approve attendees" name="aprrove_attendees" />
     </div>
@@ -68,11 +68,11 @@ const EventSettings = (props: FormDataProps, ref: ForwardedRef<FormDataAttrs>) =
         <legend className="text-base font-medium text-gray-700">
           Privacy
         </legend>
-        <RadioGroup ref={setRef("privacy")} className="mt-2 flex items-center">
+        <RadioGroup ref={setRef("privacy")} className="mt-2 flex items-center flex-wrap">
           {privacyOptSWR.isLoading ? <div className="text-gray-500">Loading...</div> :
             (privacyOptSWR.data || []).map((priv, index) => <Radio key={`settins-privacy-${priv.id}`} id={priv.value}
               name="privacy_option"
-              className={index > 0 ? "ml-8" : ""}
+              className={index < privacyOptSWR.data?.length! ? "mr-8" : ""}
               label={priv.title}
               defaultChecked={priv.isDefault}
             />)}

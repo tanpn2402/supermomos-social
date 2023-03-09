@@ -13,7 +13,7 @@ type RadioProps = {
 
 const Radio = (props: RadioProps) => {
 
-  return <div className={cls("flex items-center mr-4 mb-2", props.className || "")}>
+  return <div className={cls("flex items-center mb-4", props.className || "")}>
     <input type="radio" id={props.id} name={props.name} className="opacity-0 absolute h-6 w-6" defaultChecked={props.defaultChecked} />
     <div className="bg-white border-2 rounded-full border-gray-400 w-6 h-6 flex-center flex-shrink-0 focus-within:border-gray-500">
       <svg className="fill-current hidden w-3 h-3 text-gray-600 pointer-events-none" version="1.1" viewBox="0 0 17 12" xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +24,7 @@ const Radio = (props: RadioProps) => {
         </g>
       </svg>
     </div>
-    <label htmlFor={props.id} className="ml-3 block text-base font-normal text-gray-600">{props.label}</label>
+    <label htmlFor={props.id} className="ml-3 block text-base font-normal text-gray-600 whitespace-nowrap">{props.label}</label>
   </div>
 }
 

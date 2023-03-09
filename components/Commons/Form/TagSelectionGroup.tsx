@@ -30,8 +30,8 @@ const TagSelectionGroup = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
   }, [selectedTags.length]);
 
   return <div className={props.className || ""}>
-    <div className="mt-6 flex items-center">
-      {selectedTags.map((tag, index) => <div key={`tag-active-${tag}`} className={cls("badge active", index > 0 ? "ml-2" : "")}>
+    <div className="mt-6 flex items-center flex-wrap">
+      {selectedTags.map((tag, index) => <div key={`tag-active-${tag}`} className={cls("badge active my-1", index < selectedTags.length ? "mr-2" : "")}>
         {tag}
         <div className="flex-center ml-1" onClick={() => setSelectedTags(tags => tags.filter(t => t !== tag))}>
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -40,12 +40,12 @@ const TagSelectionGroup = (props: Props, ref: ForwardedRef<FormDataAttrs>) => {
         </div>
       </div>)}
     </div>
-    <div className={cls("mt-4 flex items-center", isValid ? "" : "data-invalid p-2")}>
+    <div className={cls("mt-4 flex items-center flex-wrap", isValid ? "" : "data-invalid p-2")}>
       {props.options.filter(t => !selectedTags.includes(t)).map((tag, index) => {
         if (selectedTags.includes(tag)) {
           return null;
         }
-        return <div key={`tag-${tag}`} className={cls("badge", index > 0 ? "ml-2" : "")}
+        return <div key={`tag-${tag}`} className={cls("badge my-1 mr-2")}
           onClick={() => setSelectedTags(tags => [...tags, tag])}>
           {tag}
         </div>
